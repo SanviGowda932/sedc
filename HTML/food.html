@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing System</title>
+    <style>
+        body{
+            background-image: url(https://curlytales.com/wp-content/uploads/2022/06/Untitled-design-2022-06-15T172206.344.jpg);
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+
+
+            .container{
+                padding: 10px 20px;
+                border-radius: 15px;
+                text-align: center;
+                box-shadow: 0 10px 50px black;
+                width: 400px;
+                backdrop-filter:blur(5px);
+                color: white;
+               }
+            input{
+                padding: 5px;
+                color: black;
+                margin: 9px auto;
+                font-size: 15px;
+                margin-left: 10px;
+
+            }
+            button {
+                    background-color: rgb(184, 29, 223);
+                    color: white;
+                    font-size: 17px;
+                    border-radius: 12px;
+                    border: none;
+                    cursor: pointer;
+                    margin-top: 12px;
+                    padding: 10px 20px;
+                    }
+                    h2{
+                        text-align: center;
+                        color: blue;
+                    }
+                    h3{
+                        text-align: center;
+                        color: rgb(13, 14, 13);
+                    }
+               
+                      }
+    </style>
+</head>
+<body>
+    <div class="container"> 
+        <h2>Welcome To Kitab Cafe</h2>
+        <h3>Menu</h3>
+
+        <label>Dosa : Rs.20 <input type="number" min="0" id="Dosa" value="0"></label><br>
+        <label>Idli : Rs.15 <input type="number" min="0" id="Idli" value="0"></label><br>
+        <label>Meals : Rs.180 <input type="number" min="0" id="Meals" value="0"></label><br>
+        <label>Coffee : Rs.10 <input type="number" min="0" id="Coffee" value="0"></label><br>
+        <label>Tea : Rs.20 <input type="number" min="0" id="Tea" value="0"></label><br>
+        <label>Juice : Rs.60 <input type="number" min="0" id="Juice" value="0"></label><br>
+        <label>Gobi : Rs.65 <input type="number" min="0" id="Gobi" value="0"></label><br><br>
+
+        <button onclick="bill()">Calculate Bill</button> 
+        <p>Total amount will be: <id="totalAmount"></p>
+    </div>
+
+    <script src="food.js">
+        
+    </script>
+</body>
+</html>

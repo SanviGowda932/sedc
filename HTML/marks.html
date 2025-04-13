@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Result Prediction Sheet</title>
+  
+<body>
+  <div class="container">
+    <h1>Result Prediction Sheet</h1>
+    <hr> 
+    <label for="name">Student name:</label>
+    <input type="text" id="name" placeholder="Enter your name" required>
+    <button onclick="predictResult()">Predict Result</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function predictResult() {
+      var name = document.getElementById("name").value;
+      var resultDiv = document.getElementById("result");
+  
+      if (!name.trim()) {
+        resultDiv.innerHTML = "<span style='color: red;'>Please enter your name!</span>";
+        return;
+      }
+  
+      var marksObtained = Math.floor(Math.random() * 100) + 1;
+      var resultText = (marksObtained >= 50) ? "Pass" : "Fail";
+  
+      resultDiv.innerHTML = `
+        Name✨: <strong>${name}</strong><br>
+        Marks Obtained😍: <strong>${marksObtained}</strong><br>
+        Result🎉🎗️: <strong>${resultText}</strong>
+      `;
+    }
+  </script>
+</body>
+</head>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Love Calculator</title>
+  <style>
+    body {
+      background-color: pink;
+      background-image: url(image\ 2.avif);
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: rgba(204, 94, 94, 0.8);
+      padding: 20px 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 50px black;
+      width: 410px;
+    }
+
+    input {
+      display: block;
+      padding: 10px;
+      width: 330px;
+      margin: 15px auto;
+      border: 1px solid green;
+      border-radius: 10px;
+      font-size: 15px;
+      background-color: rgb(190, 208, 211);
+      color: white;
+    }
+
+    button {
+      background-color: rgb(223, 29, 158);
+      color: white;
+      font-size: 17px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      margin-top: 12px;
+      padding: 10px 20px;
+    }
+
+    #result {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 22px;
+      color: rgb(110, 236, 51);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <input type="text" placeholder="💕Enter your name💕" id="name1" />
+    <input type="text" placeholder="💕Enter your partner name💕" id="name2" />
+    <button onclick="LoveScore()">Calculate love %</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    function LoveScore() {
+      var name1 = document.getElementById("name1").value;
+      var name2 = document.getElementById("name2").value;
+      var result = document.getElementById("result");
+
+      if (name1 === "" || name2 === "") {
+        result.innerHTML = "❗ Please fill in both names!";
+        return;
+      }
+
+      const loveScore = Math.floor(Math.random() * 100) + 1;
+      result.innerHTML = `${name1} ❤️ ${name2} = ${loveScore}% Love Match! 💘`;
+    }
+  </script>
+</body>
+</html>
