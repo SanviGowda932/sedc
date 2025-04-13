@@ -68,11 +68,29 @@
         <label>Gobi : Rs.65 <input type="number" min="0" id="Gobi" value="0"></label><br><br>
 
         <button onclick="bill()">Calculate Bill</button> 
-        <p>Total amount will be: <id="totalAmount"></p>
+        <p>Total amount will be: <span id="totalAmount">Rs. 0</span></p>
     </div>
 
-    <script src="food.js">
+    <script >function bill() {
+        const prices = {
+            Dosa: 20,
+            Idli: 15,
+            Meals: 180,
+            Coffee: 10,
+            Tea: 20,
+            Juice: 60,
+            Gobi: 65
+        };
+    
+        let total = 0;
+        for (let item in prices) {
+            const quantity = parseInt(document.getElementById(item).value) || 0;
+            total += prices[item] * quantity;
+        }
+    
+        document.getElementById("totalAmount").innerText = "Rs. " + total;
+    }</script>
         
-    </script>
+    
 </body>
 </html>
