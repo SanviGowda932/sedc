@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Billing System with Invoice</title>
+  <style>
+    body {
+      background-image: url(https://curlytales.com/wp-content/uploads/2022/06/Untitled-design-2022-06-15T172206.344.jpg);
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 50px black;
+      width: 90%;
+      max-width: 400px;
+      backdrop-filter: blur(6px);
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      height: 400px;
+    }
+
+    @media (max-height: 700px) {
+      .container {
+        overflow-y: auto;
+        max-height: 90vh;
+      }
+    }
+
+    input, select {
+      color: black;
+      margin: 9px auto;
+      font-size: 15px;
+      margin-left: 10px;
+      border-radius: 8px;
+      width: 80%;
+      padding: 6px;
+    }
+
+    button {
+      background-color: rgb(17, 11, 19);
+      color: white;
+      font-size: 17px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      margin-top: 12px;
+      padding: 10px 20px;
+      width: 90%;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: rgb(25, 17, 25);
+    }
+
+    h2 {
+      color: lightblue;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      color: lightyellow;
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+
+    p {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #billDetails {
+      text-align: left;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+
+    #invoice {
+      display: none;
+      background: white;
+      color: black;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #invoice, #invoice * {
+        visibility: visible;
+      }
+      #invoice {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
+    }
+
+    .feedback {
+      color: limegreen;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome To Kitab Cafe</h2>
+    <form onsubmit="event.preventDefault(); bill();" role="form" aria-label="Billing form">
+      <label for="customerName">Customer Name</label>
+      <input type="text" id="customerName" placeholder="Enter Customer Name" required aria-required="true" aria-label="Customer Name"/>
+
+      <h3>Menu</h3>
+      <label for="Dosa">Dosa : Rs.20</label>
+      <input type="number" min="0" id="Dosa" value="0" aria-label="Quantity of Dosa">
+
+      <label for="Idli">Idli : Rs.15</label>
+      <input type="number" min="0" id="Idli" value="0" aria-label="Quantity of Idli">
+
+      <label for="Meals">Meals : Rs.180</label>
+      <input type="number" min="0" id="Meals" value="0" aria-label="Quantity of Meals">
+
+      <label for="Coffee">Coffee : Rs.10</label>
+      <input type="number" min="0" id="Coffee" value="0" aria-label="Quantity of Coffee">
+
+      <label for="Tea">Tea : Rs.20</label>
+      <input type="number" min="0" id="Tea" value="0" aria-label="Quantity of Tea">
+
+      <label for="Juice">Juice : Rs.60</label>
+      <input type="number" min="0" id="Juice" value="0" aria-label="Quantity of Juice">
+
+      <label for="Gobi">Gobi : Rs.65</label>
+      <input type="number" min="0" id="Gobi" value="0" aria-label="Quantity of Gobi">
+
+      <label for="paymentMethod">Payment Method:</label>
+      <select id="paymentMethod" aria-label="Select payment method">
+        <option value="cash">Cash</option>
+        <option value="creditCard">Credit Card</option>
+        <option value="mobile">Mobile Payment</option>
+      </select>
+
+      <button type="submit">Calculate Bill</button>
+    </form>
+
+    <button onclick="printInvoice()">Generate Invoice</button>
+    <button onclick="location.reload()">Reset</button>
+
+    <p>Total amount will be: <span id="totalAmount">Rs. 0</span></p>
+    <div id="billDetails"></div>
+
+    <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+  </div>
+
+  <div id="invoice">
+    <h2>Kitab Cafe - Invoice</h2>
+    <p id="invoiceInfo"></p>
+    <p id="invoiceContent"></p>
+    <p><strong>Thank you for visiting!</strong></p>
+  </div>
+
+  <script>
+    let lastInvoice = '';
+    let invoiceHeader = '';
+
+    const paymentMethodLabel = {
+      cash: "Cash",
+      creditCard: "Credit Card",
+      mobile: "Mobile Payment"
+    };
+
+    function escapeHTML(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function bill() {
+      const prices = {
+        Dosa: { price: 20, description: 'Delicious South Indian pancake.' },
+        Idli: { price: 15, description: 'Steamed rice cakes served with chutney.' },
+        Meals: { price: 180, description: 'Hearty South Indian full meal.' },
+        Coffee: { price: 10, description: 'Freshly brewed coffee.' },
+        Tea: { price: 20, description: 'Hot tea with a comforting aroma.' },
+        Juice: { price: 60, description: 'Fresh fruit juice.' },
+        Gobi: { price: 65, description: 'Crispy fried cauliflower.' }
+      };
+
+      const rawName = document.getElementById("customerName").value.trim();
+      const customerName = escapeHTML(rawName);
+      if (!customerName) {
+        alert("Please enter customer name.");
+        return;
+      }
+
+      let itemizedDetails = '';
+      let subtotal = 0;
+
+      for (let item in prices) {
+        const quantity = parseInt(document.getElementById(item).value) || 0;
+        if (quantity > 0) {
+          const itemTotal = prices[item].price * quantity;
+          subtotal += itemTotal;
+          itemizedDetails += `<tr><td>${item}</td><td>${quantity}</td><td>Rs. ${itemTotal.toFixed(2)}</td><td>${prices[item].description}</td></tr>`;
+        }
+      }
+
+      if (subtotal === 0) {
+        alert("Please enter at least one item.");
+        document.getElementById("totalAmount").innerText = "Rs. 0";
+        document.getElementById("billDetails").innerHTML = "";
+        return;
+      }
+
+      const taxRate = 0.05;
+      const tax = subtotal * taxRate;
+      const total = subtotal + tax;
+
+      const paymentMethod = document.getElementById("paymentMethod").value;
+      const paymentDisplay = paymentMethodLabel[paymentMethod] || paymentMethod;
+      const paymentDetails = `<br><strong>Payment Method:</strong> ${paymentDisplay}`;
+
+      const breakdown = `Subtotal: Rs. ${subtotal.toFixed(2)}<br>GST (5%): Rs. ${tax.toFixed(2)}<br><strong>Total: Rs. ${total.toFixed(2)}</strong>${paymentDetails}`;
+
+      itemizedDetails = `
+        <table style="width:100%; border-collapse: collapse;" border="1">
+          <tr><th>Item</th><th>Qty</th><th>Price</th><th>Description</th></tr>
+          ${itemizedDetails}
+        </table>
+      `;
+
+      document.getElementById("billDetails").innerHTML = `
+        <h3>Customer: ${customerName}</h3>
+        ${itemizedDetails}${breakdown}
+      `;
+      document.getElementById("totalAmount").innerText = "Rs. " + total.toFixed(2);
+
+      const now = new Date();
+      const invoiceNumber = "INV-" + now.getTime();
+      invoiceHeader = `<strong>Invoice Number:</strong> ${invoiceNumber}<br><strong>Customer Name:</strong> ${customerName}<br><strong>Date:</strong> ${now.toLocaleDateString()}<br><strong>Time:</strong> ${now.toLocaleTimeString()}<br><br>`;
+
+      lastInvoice = itemizedDetails + breakdown;
+      document.getElementById("feedback").innerText = "Bill calculated successfully!";
+    }
+
+    function printInvoice() {
+      if (!lastInvoice) {
+        alert("Please calculate the bill before generating invoice.");
+        return;
+      }
+
+      const paymentMethod = document.getElementById("paymentMethod").value;
+      const paymentDisplay = paymentMethodLabel[paymentMethod] || paymentMethod;
+
+      document.getElementById("invoiceInfo").innerHTML = invoiceHeader;
+      document.getElementById("invoiceContent").innerHTML = lastInvoice + `<p><strong>Payment Method:</strong> ${paymentDisplay}</p>`;
+      document.getElementById("invoice").style.display = "block";
+      window.print();
+    }
+  </script>
+</body>
+</html>

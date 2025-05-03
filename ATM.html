@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+     <style>
+      body{
+        display:flex;  
+        background-image: url(https://ajeevi.com/wp-content/uploads/2023/06/2-8.jpg); 
+        width: auto;
+        background-size: cover;
+        justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            padding: 20px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 50px black;
+            width: 400px;
+            backdrop-filter: blur(6px);
+            background-color: rgba(206, 18, 18, 0.4);
+            color: white;
+        }
+     </style>
+  </head>
+  <body>
+    <div class="container">
+    <div class="atm box p-4">
+      <h3 class="fw-bolder">Welcome To Sanvi ATM</h3>
+      <div id="Login">
+        <label for="pin">Enter The PIN</label>
+        <input type="password" id="pin" class="form-control mb-3">
+        <button class="btn btn-primary" onclick="validatepin()">Enter</button>
+        <p id="error" class="text-danger fw-bold mt-2"></p>
+      </div>
+    </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+
+    <script>
+      function validatepin() {
+        const pin = "1432";
+        const epin = document.getElementById("pin").value;
+        const error = document.getElementById("error");
+
+        if (epin === pin) {
+          window.location.href = "atmmenu.html";
+        } else {
+          error.innerText = "Please enter the right PIN.";
+        }
+      }
+   
+    </script>
+
+  </body>
+</html>
